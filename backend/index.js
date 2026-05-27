@@ -5,9 +5,10 @@ const app = express()
 const PORT = 8000
 
 const { mongoConnect } = require("./config/db_connection")
+const cors = require("cors")
+app.use(cors())
 
 app.use(express.json())
-
 const userRoutes = require("./routes/user")
 const productRoutes = require("./routes/product")
 
