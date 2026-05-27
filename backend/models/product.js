@@ -2,12 +2,13 @@ const { getDb } = require("../config/db_connection")
 const {ObjectId} = require("mongodb")
 class Product {
 
-    constructor(title, price, description, imageUrl,id) {
+    constructor(title, price, description, imageUrl,userId,id) {
 
         this.title = title
         this.price = price
         this.description = description
         this.imageUrl = imageUrl
+        this.userId = userId;
         if (id) {
         this._id = id
         }
@@ -33,10 +34,10 @@ class Product {
         
         }
     }
-    static fetchAll() {
+    static fetchAll(userId) {
         const db = getDb()
         return db.collection("products")
-            .find()
+            .find({userId:userId})
             .toArray()
             
     }

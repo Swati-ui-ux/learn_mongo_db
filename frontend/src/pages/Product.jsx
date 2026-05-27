@@ -14,15 +14,18 @@ const Product = () => {
 
     const [editId, setEditId] = useState(null)
 
-   
+   const token = localStorage.getItem("token")
 
     const getProducts = async () => {
 
         try {
 
             const response = await axios.get(
-                "http://localhost:8000/product/get"
-            )
+                "http://localhost:8000/product/get",{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            })
 
             setProducts(response.data.products)
 
@@ -63,17 +66,26 @@ const Product = () => {
 
                 await axios.put(
                     `http://localhost:8000/product/update/${editId}`,
-                    formData
+                    formData,{
+                        headers:{
+                            Authorization:`Bearer ${token}`
+                        }
+                    }
                 )
                 getProducts()
                 alert("Product Updated")
 
             } else {
 
-                await axios.post(
+              let {data} =  await axios.post(
                     "http://localhost:8000/product/create",
-                    formData
+                    formData,{
+                        headers:{
+                            Authorization:`Bearer ${token}`
+                        }
+                    }
                 )
+                console.log('data',data.product)
                 getProducts()
                 alert("Product Created")
 
@@ -105,7 +117,11 @@ const Product = () => {
         try {
 
             await axios.delete(
-                `http://localhost:8000/product/delete/${id}`
+                `http://localhost:8000/product/delete/${id}`,{
+                    headers:{
+                        Authorization:`Bearer ${token}`
+                    }
+                }
             )
 
             alert("Product Deleted")

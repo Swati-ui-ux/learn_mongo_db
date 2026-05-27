@@ -17,7 +17,6 @@ const navigate=useNavigate()
         })
 
     }
-   const token = localStorage.getItem("token")
     const handleSubmit = async (e) => {
 
         e.preventDefault()
@@ -26,12 +25,7 @@ const navigate=useNavigate()
 
             const response = await axios.post(
                 "http://localhost:8000/user/login",
-                formData, {
-                    headers: {
-                        Authorization:`Bearer ${token}`
-}
-                
-                }
+                formData,
             )
 
             localStorage.setItem(

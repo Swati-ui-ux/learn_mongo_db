@@ -17,7 +17,8 @@ const createProduct = async (req, res) => {
             title,
             price,
             description,
-            imageUrl
+            imageUrl,
+            req.userId,
         )
 
         const result = await product.save()
@@ -31,11 +32,12 @@ const createProduct = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error)
+        console.log(error.message)
 
         return res.status(500).json({
             error: true,
-            message: "Internal server error"
+            message: "Internal server error",
+            error:error.message,
         })
 
     }
@@ -43,8 +45,9 @@ const createProduct = async (req, res) => {
 }
 
 const getProducts =async(req,res)=>{
-   try {
-       const products = await Product.fetchAll()
+    try {
+     
+       const products = await Product.fetchAll(req.userId)
        return res.status(200).json({message:"success",products:products})
    } catch (error) {
     console.log(error)
@@ -97,7 +100,8 @@ const updateProduct = async (req, res) => {
             price,
             description,
             imageUrl,
-            productId
+            req.userId,
+            productId,
         )
 
         await product.save()

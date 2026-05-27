@@ -51,7 +51,6 @@ try {
         process.env.SECRET_KEY,
         {expiresIn:"7d"}
     )
-    console.log("token",token)
     return res.status(200).json({message:"Login success",token,user: {
                 _id: user._id,
                 name: user.name,
