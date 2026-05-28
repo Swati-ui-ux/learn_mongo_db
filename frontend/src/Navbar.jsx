@@ -32,6 +32,12 @@ const Navbar = () => {
           >
             Products
                   </Link>
+                  <Link to="/cart">
+                Cart
+          </Link>
+          <Link to="/orders">
+                Orders
+                </Link>
                   <button
                       className='hover:text-yellow-300 transition duration-300'
                       onClick={handleLogout}

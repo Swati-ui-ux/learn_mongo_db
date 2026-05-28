@@ -53,7 +53,15 @@ class Product {
         const db = getDb();
         return db.collection("products").deleteOne({_id:new ObjectId(productId)})
 }
-    
+  static findById(productId){
+
+    const db = getDb()
+
+    return db.collection("products").findOne({
+        _id:new ObjectId(productId)
+    })
+
+}
 }
 
 module.exports = Product

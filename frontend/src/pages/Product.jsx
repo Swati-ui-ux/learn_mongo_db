@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-
+import { toast } from "react-toastify"
+import {useNavigate} from "react-router-dom"
 const Product = () => {
-
+    const navigate = useNavigate()
     const [products, setProducts] = useState([])
 
     const [formData, setFormData] = useState({
@@ -154,6 +155,29 @@ const Product = () => {
 
     }
 
+    const addToCart = async (productId) => {
+
+    try {
+
+        const response = await axios.post(
+            `http://localhost:8000/cart/add-to-cart/${productId}`,
+            {},
+            {
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+        )
+
+        toast(response.data.message,{autoClose:500})
+       navigate("/cart")
+    } catch (error) {
+
+        console.log(error)
+
+    }
+
+}
     return (
 
         <div className="min-h-screen bg-gray-100 p-8">
@@ -278,6 +302,13 @@ const Product = () => {
                                         className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
                                     >
                                         Delete
+                                    </button>
+                                    
+                                    <button
+                                        onClick={() => addToCart(product._id)}
+                                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+                                    >
+                                        Add To Cart
                                     </button>
 
                                 </div>
