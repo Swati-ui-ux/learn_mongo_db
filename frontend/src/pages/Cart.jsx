@@ -115,7 +115,8 @@ const Cart = () => {
              cartItems.length === 0 ? (
 
             <h2 className="text-center text-2xl">
-                        Cart is Empty
+                        Loading...
+
             </h2>
 
             ) : (

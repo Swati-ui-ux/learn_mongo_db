@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
-import {useNavigate} from "react-router-dom"
 const Product = () => {
-    const navigate = useNavigate()
     const [products, setProducts] = useState([])
 
     const [formData, setFormData] = useState({
@@ -169,8 +167,7 @@ const Product = () => {
             }
         )
 
-        toast(response.data.message,{autoClose:500})
-       navigate("/cart")
+        toast(response.data.message)
     } catch (error) {
 
         console.log(error)
