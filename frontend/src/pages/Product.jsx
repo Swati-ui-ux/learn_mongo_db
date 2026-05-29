@@ -27,7 +27,7 @@ const Product = () => {
             })
 
             setProducts(response.data.products)
-
+            console.log(response.data.products)
         } catch (error) {
 
             console.log(error)
@@ -72,7 +72,7 @@ const Product = () => {
                     }
                 )
                 getProducts()
-                alert("Product Updated")
+                toast.success("Product Updated")
 
             } else {
 
@@ -86,7 +86,7 @@ const Product = () => {
                 )
                 console.log('data',data.product)
                 getProducts()
-                alert("Product Created")
+                toast.success("Product Created")
 
             }
 
@@ -99,7 +99,7 @@ const Product = () => {
 
             setEditId(null)
 
-            // getProducts()
+            getProducts()
 
         } catch (error) {
 

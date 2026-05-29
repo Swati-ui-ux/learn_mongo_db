@@ -42,29 +42,27 @@ const Orders = () => {
 
         <div className="min-h-screen bg-gray-100 p-8">
 
-            <h1 className="text-4xl font-bold text-center mb-10">
+          <h1 className="text-4xl font-bold text-center mb-10">
                 My Orders
-            </h1>
+           </h1>
 
-            {
-                orders.length === 0 ? (
+           {
+            orders.length === 0 ? (
 
-                    <h2 className="text-center text-2xl">
+             <h2 className="text-center text-2xl">
                         No Orders Found
-                    </h2>
+            </h2>
 
-                ) : (
+            ) : (
 
-                    <div className="space-y-8">
+            <div className="space-y-8">
+            { orders.map((order, index) => {
 
-                        {
-                            orders.map((order, index) => {
-
-                                const orderTotal = order.items.reduce(
+                                const orderTotal = (order.products||[]).reduce(
                                     (total, item) =>
                                         total +
                                         (
-                                            (Number(item.price) || 0) *
+                                            (Number(item.productId?.price) || 0) *
                                             (Number(item.quantity) || 0)
                                         ),
                                     0
@@ -84,7 +82,7 @@ const Orders = () => {
                                         <div className="space-y-4">
 
                                             {
-                                                order.items.map((item, i) => (
+                                                (order.products||[]).map((item, i) => (
 
                                                     <div
                                                         key={i}
@@ -94,18 +92,18 @@ const Orders = () => {
                                                         <div>
 
                                                             <h3 className="text-lg font-semibold">
-                                                                {item.title}
+                                                                {item.productId?.title}
                                                             </h3>
 
                                                             <p className="text-gray-500">
-                                                                ₹ {item.price} × {item.quantity}
+                                                                ₹ {item.productId?.price} × {item.quantity}
                                                             </p>
 
                                                         </div>
 
                                                         <h3 className="font-bold text-green-600">
                                                             ₹ {
-                                                                (Number(item.price) || 0) *
+                                                                (Number(item.productId?.price) || 0) *
                                                                 (Number(item.quantity) || 0)
                                                             }
                                                         </h3>

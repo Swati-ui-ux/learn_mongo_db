@@ -5,8 +5,9 @@ require("dotenv").config()
 const createUser = async (req, res) => {
    try {
        const { name, email, password } = req.body;
-       console.log("Name",name)
-       const isUser = await User.findByEmail(email);
+       
+       const isUser = await User.findOne({email});
+       console.log("User in db",isUser)
        if (isUser) {
        return res.status(400).json({message:"User already Exists."})
        }
@@ -14,8 +15,14 @@ const createUser = async (req, res) => {
        if (!email || !password) {
        return res.status(400).json({message:"Email and password is required"})
        }
-       const user = new User(name, email ,hashedPassword)
-       const data = await user.save()
+       const user = await User.create({
+           name,
+           email, password: hashedPassword,
+           cart: {
+            itmes:[]
+           }
+       })
+       const data =  user.save()
        return res.status(201).json({message:"User create successfully",data})
    } catch (error) {
        console.log(error.message)
@@ -26,7 +33,7 @@ const createUser = async (req, res) => {
 const getSingleUser=async(req,res) => {
 try {
     const userId = req.params.id
-    const user = await User.findUserById(userId)
+    const user = await User.findById({userId})
     return res.status(200).json({message:"Get single user successful",user})
 } catch (error) {
     console.log(error.message)
@@ -37,7 +44,7 @@ try {
 const loginUser = async (req, res) => {
 try {
     const { email, password } = req.body
-    const user = await User.findByEmail(email)
+    const user = await User.findOne({email})
     console.log("User",user)
     if (!user) {
     return res.status(404).json({message:"User not found"})

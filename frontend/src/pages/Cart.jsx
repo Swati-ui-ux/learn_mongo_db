@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { toast } from "react-toastify"
 
 const Cart = () => {
 
@@ -21,7 +22,7 @@ const Cart = () => {
             )
 
             console.log(response.data.cartItems)
-
+             
             setCartItems(response.data.cartItems)
 
         } catch (error) {
@@ -32,7 +33,7 @@ const Cart = () => {
 
     }
 
-    const placeOrder = async () => {
+const placeOrder = async () => {
 
     try {
 
@@ -65,7 +66,7 @@ const Cart = () => {
     const totalPrice = cartItems.reduce((total,item)=>{
 
         return total + (
-            (Number(item.price) || 0) *
+            (Number(item.productId.price) || 0) *
             (Number(item.quantity) || 0)
         )
 
@@ -91,7 +92,8 @@ const Cart = () => {
         )
 
         console.log(response.data)
-
+      getCartItems()
+      toast.success("Cart item deleted successfully")
         // UI instantly update
         setCartItems((prev) =>
             prev.filter((item) => item._id !== productId)
@@ -133,16 +135,16 @@ const Cart = () => {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden"
                                     >
 
-                 <img src={item.imageUrl}
+                 <img src={item.productId.imageUrl}
                     alt={item.title}
                 className="w-full h-56 object-cover"/> <div className="p-5">
 
                              <h2 className="text-2xl font-bold">{item.title}</h2>
                              <p className="text-gray-600 mt-2">
-                                                {item.description}
+                                                {item.productId.description}
                              </p>
                              <h3 className="text-xl font-semibold mt-3">
-                                                ₹ {item.price}
+                                                ₹ {item.productId.price}
                              </h3>
                              
 
@@ -153,11 +155,11 @@ const Cart = () => {
 
                             <h3 className="text-lg text-green-600 mt-2 font-semibold">
                             Item Total : ₹ {
-                                                    (Number(item.price) || 0) *
+                                                    (Number(item.productId.price) || 0) *
                                                     (Number(item.quantity) || 0)
                                                 }
                              </h3>
-                             <button className="text-bold bg-red-500 text-white px-6 rounded-md py-1 " onClick={() => deleteCartItem(item._id)}>Delete</button>
+                             <button className="text-bold bg-red-500 text-white px-6 rounded-md py-1 " onClick={() => deleteCartItem(item.productId._id)}>Delete</button>
 
                          </div>
                          
@@ -188,18 +190,18 @@ const Cart = () => {
                     <div>
 
                         <h3 className="text-lg font-semibold">
-                            {item.title}
+                            {item.productId.title}
                         </h3>
 
                         <p className="text-gray-500">
-                            ₹ {item.price} × {item.quantity}
+                            ₹ {item.productId.price} × {item.quantity}
                         </p>
 
                     </div>
 
                     <h3 className="text-lg font-bold text-green-600">
-                        ₹ {
-                            (Number(item.price) || 0) *
+                  ₹ {
+                            (Number(item.productId.price) || 0) *
                             (Number(item.quantity) || 0)
                         }
                     </h3>

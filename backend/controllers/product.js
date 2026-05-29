@@ -17,7 +17,8 @@ const createProduct = async (req, res) => {
             {title,
             price,
             description,
-            imageUrl,
+                imageUrl,
+            userId:req.userId
            }
         )
 
@@ -46,7 +47,7 @@ const createProduct = async (req, res) => {
 const getProducts =async(req,res)=>{
     try {
      
-       const products = await Product.find()
+       const products = await Product.find().populate("userId",'-password')
        return res.status(200).json({message:"success",products:products})
    } catch (error) {
     console.log(error)

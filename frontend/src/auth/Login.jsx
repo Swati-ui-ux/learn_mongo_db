@@ -1,7 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 const Login = () => {
 const navigate=useNavigate()
     const [formData, setFormData] = useState({
@@ -81,6 +81,8 @@ const navigate=useNavigate()
                     >
                         Login
                     </button>
+                    <p> Already have an account <Link to='/signup'>click!</Link></p>
+                   
 
                 </form>
 

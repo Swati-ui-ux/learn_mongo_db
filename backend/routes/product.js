@@ -5,8 +5,8 @@ const { createProduct, getProducts, getSingleProduct, updateProduct, deleteProdu
 const auth = require("../middleware/auth")
 const router = express.Router()
 
-router.post("/create", createProduct)
-router.get("/get", getProducts)
+router.post("/create",auth, createProduct)
+router.get("/get",auth, getProducts)
 router.get("/get-single/:id", getSingleProduct)
 router.put("/update/:id",updateProduct)
 router.delete("/delete/:id",deleteProduct)

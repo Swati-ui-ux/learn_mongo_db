@@ -1,3 +1,4 @@
+const Cart = require("../models/cart")
 const Product = require("../models/product")
 const User = require("../models/user")
 
@@ -6,10 +7,8 @@ const addToCart = async (req, res) => {
     try {
 
         const productId = req.params.productId
-
-        const user = await User.findUserById(
-            req.userId
-        )
+        const userId = req.userId
+     
 
         const product = await Product.findById(
             productId
@@ -22,14 +21,24 @@ const addToCart = async (req, res) => {
             })
 
         }
-
-        const data = await user.addToCart(
-            product
-        )
-
+      //  already exist 
+      const existingCartItem = await Cart.findOne({
+        userId,
+        productId
+      })
+      if (existingCartItem) {
+        existingCartItem.quantity += 1;
+        await existingCartItem.save();
+        return res.status(200).json({message:"Quantity updated",data:existingCartItem})
+      }
+      const cartItem = await Cart.create({
+        userId,
+        productId,
+        quantity:1,
+      })
         return res.json({
             message:"Added to the cart",
-            data
+            data:cartItem,
         })
 
     } catch (error) {
@@ -48,15 +57,15 @@ const addToCart = async (req, res) => {
 const getCart = async (req,res)=>{
 
     try {
+      const userId = req.userId;
 
-        const user = await User.findUserById(
-            req.userId
-        )
+         const cartItems = await Cart.find({
+            userId
+        })
+        .populate("productId")
 
-        const cartItems = user.getCart()
-
-        return res.json({
-            message:"Cart fetched",
+        return res.status(200).json({
+            message: "Cart fetched",
             cartItems
         })
 
@@ -74,9 +83,9 @@ const deleteCart = async (req, res) => {
 
         const productId = req.params.productId
 
-        const user = await User.findUserById(req.userId)
+        const userId = req.userId
 
-        await user.deleteCartItem(productId)
+        await Cart.findOneAndDelete({userId,productId})
 
         res.status(200).json({
             message: "Item Deleted Successfully"
