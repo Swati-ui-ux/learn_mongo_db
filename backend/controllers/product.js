@@ -6,27 +6,26 @@ const createProduct = async (req, res) => {
 
         const { title, price, description, imageUrl } = req.body
 
-        if (!title || !price) {
+        if (!title || !price||!description||!imageUrl) {
             return res.status(400).json({
                 error: true,
-                message: "Title and Price required"
+                message: "All fields required"
             })
         }
 
-        const product = new Product(
-            title,
+        const product = await Product.create(
+            {title,
             price,
             description,
             imageUrl,
-            req.userId,
+           }
         )
 
-        const result = await product.save()
+        
 
         return res.json({
             error: false,
             message: "Product added successfully",
-            result,
             product,
         })
 
@@ -47,7 +46,7 @@ const createProduct = async (req, res) => {
 const getProducts =async(req,res)=>{
     try {
      
-       const products = await Product.fetchAll(req.userId)
+       const products = await Product.find()
        return res.status(200).json({message:"success",products:products})
    } catch (error) {
     console.log(error)
@@ -59,7 +58,7 @@ const getProducts =async(req,res)=>{
 const getSingleProduct =async (req,res) => {
 try {
     const productId = req.params.id
-    const product = await Product.fatchOne(productId)
+    const product = await Product.findById(productId)
     return res.status(200).json({message:"get success",product})
 } catch (error) {
 console.log(error.message)
@@ -72,7 +71,7 @@ const deleteProduct = async (req, res) => {
 
         const productId = req.params.id
 
-       let deleteData =  await Product.deleteById(productId)
+       let deleteData =  await Product.findByIdAndDelete(productId)
 
         return res.json({
             message: "Product deleted successfully",
@@ -93,16 +92,8 @@ const updateProduct = async (req, res) => {
 
         const productId = req.params.id
 
-        const { title, price, description, imageUrl } = req.body
 
-        const product = new Product(
-            title,
-            price,
-            description,
-            imageUrl,
-            req.userId,
-            productId,
-        )
+        const product = await Product.findByIdAndUpdate(productId,req.body )
 
         await product.save()
 

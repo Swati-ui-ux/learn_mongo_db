@@ -99,7 +99,7 @@ const Product = () => {
 
             setEditId(null)
 
-            getProducts()
+            // getProducts()
 
         } catch (error) {
 
